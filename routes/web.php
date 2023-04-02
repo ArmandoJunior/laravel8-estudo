@@ -14,8 +14,12 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    $events = \App\Models\Event::all();
+
+    return view('welcome', compact('events'));
 });
+
+Route::get('view-test', fn() => view('test.index'));
 
 Route::get('/event/index', [\App\Http\Controllers\EventController::class, 'index']);
 Route::get('/event/store', [\App\Http\Controllers\EventController::class, 'store']);
@@ -23,7 +27,6 @@ Route::get('/event/update/{event}', [\App\Http\Controllers\EventController::clas
 Route::get('/event/destroy/{event}', [\App\Http\Controllers\EventController::class, 'destroy']);
 
 Route::get('/queries/{id?}', function ($id = null) {
-
     if (is_null($id)) {
         $event = new \App\Models\Event();
         $event->title = 'Evento via Eloquente e Active Record';
