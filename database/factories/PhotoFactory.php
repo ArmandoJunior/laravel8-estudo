@@ -16,7 +16,7 @@ class PhotoFactory extends Factory
     public function definition()
     {
         return [
-            'photo' => $this->faker->imageUrl()
+            'photo' => $this->faker->imageUrl(word: $this->faker->colorName)
         ];
     }
 }

@@ -1,6 +1,11 @@
 <?php
 
+use App\Http\Controllers\EventController;
+use App\Http\Controllers\HelloWorldController;
+use App\Http\Controllers\HomeController;
+use App\Models\Event;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Str;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,31 +18,31 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [HomeController::class, 'index']);
+Route::get('/eventos/{slug}', [HomeController::class, 'show']);
 
-Route::get('/event/index', [\App\Http\Controllers\EventController::class, 'index']);
-Route::get('/event/store', [\App\Http\Controllers\EventController::class, 'store']);
-Route::get('/event/update/{event}', [\App\Http\Controllers\EventController::class, 'update']);
-Route::get('/event/destroy/{event}', [\App\Http\Controllers\EventController::class, 'destroy']);
+Route::get('view-test', fn() => view('test.index'));
+
+Route::get('/event/index', [EventController::class, 'index']);
+Route::get('/event/store', [EventController::class, 'store']);
+Route::get('/event/update/{event}', [EventController::class, 'update']);
+Route::get('/event/destroy/{event}', [EventController::class, 'destroy']);
 
 Route::get('/queries/{id?}', function ($id = null) {
-
     if (is_null($id)) {
-        $event = new \App\Models\Event();
+        $event = new Event();
         $event->title = 'Evento via Eloquente e Active Record';
         $event->description = 'DEscrição do evento...';
         $event->body = 'Conteúdo do evento...';
         $event->start_event = date('Y-m-d H:i:s');
-        $event->slug = \Illuminate\Support\Str::slug($event->title);
+        $event->slug = Str::slug($event->title);
         $event->save();
 
         return $event->id;
     }
-    return \App\Models\Event::query()->find($id);
+    return Event::query()->find($id);
 });
 
-Route::get('/teste', [\App\Http\Controllers\HelloWorldController::class, 'teste']);
+Route::get('/teste', [HelloWorldController::class, 'teste']);
 
-Route::get('/parametros/{name?}', [\App\Http\Controllers\HelloWorldController::class, 'parametros']);
+Route::get('/parametros/{name?}', [HelloWorldController::class, 'parametros']);
