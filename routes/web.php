@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\EventController;
+use App\Http\Controllers\Admin\EventController;
 use App\Http\Controllers\HelloWorldController;
 use App\Http\Controllers\HomeController;
 use App\Models\Event;
@@ -23,10 +23,12 @@ Route::get('/eventos/{slug}', [HomeController::class, 'show']);
 
 Route::get('view-test', fn() => view('test.index'));
 
-Route::get('/event/index', [EventController::class, 'index']);
-Route::get('/event/store', [EventController::class, 'store']);
-Route::get('/event/update/{event}', [EventController::class, 'update']);
-Route::get('/event/destroy/{event}', [EventController::class, 'destroy']);
+Route::get('/admin/events/index', [EventController::class, 'index']);
+Route::get('/admin/events/create', [EventController::class, 'create']);
+Route::post('/admin/events/store', [EventController::class, 'store']);
+Route::get('/admin/events/{event}/edit', [EventController::class, 'edit']);
+Route::post('/admin/events/update/{event}', [EventController::class, 'update']);
+Route::get('/admin/events/destroy/{event}', [EventController::class, 'destroy']);
 
 Route::get('/queries/{id?}', function ($id = null) {
     if (is_null($id)) {
