@@ -14,11 +14,11 @@ class EventFactory extends Factory
      */
     public function definition()
     {
-        $title = $this->faker->sentence;
+        $title = $this->faker->words(5, true);
         return [
             'title' => $title,
             'description' => $this->faker->words(19, true),
-            'body' => $this->faker->paragraph,
+            'body' => $this->faker->paragraph(50),
             'start_event' => now(),
             'slug' => Str::slug($title)
         ];

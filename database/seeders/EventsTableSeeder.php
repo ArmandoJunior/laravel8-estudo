@@ -14,9 +14,11 @@ class EventsTableSeeder extends Seeder
      */
     public function run()
     {
-        Event::factory(89)
-            ->hasCategories(rand(1, 5))
-            ->hasPhotos(rand(3, 15))
-            ->create();
+        for ($i=0; $i<44; $i++ ) {
+            Event::factory()
+                ->hasCategories(random_int(1, 5))
+                ->hasPhotos(random_int(1, 15))
+                ->create();
+        }
     }
 }
