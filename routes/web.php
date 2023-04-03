@@ -19,16 +19,20 @@ use Illuminate\Support\Str;
 */
 
 Route::get('/', [HomeController::class, 'index']);
-Route::get('/eventos/{slug}', [HomeController::class, 'show']);
+Route::get('/events/{slug}', [HomeController::class, 'show'])->name('event.single');
 
 Route::get('view-test', fn() => view('test.index'));
 
-Route::get('/admin/events/index', [EventController::class, 'index']);
-Route::get('/admin/events/create', [EventController::class, 'create']);
-Route::post('/admin/events/store', [EventController::class, 'store']);
-Route::get('/admin/events/{event}/edit', [EventController::class, 'edit']);
-Route::post('/admin/events/update/{event}', [EventController::class, 'update']);
-Route::get('/admin/events/destroy/{event}', [EventController::class, 'destroy']);
+Route::prefix('/admin')->name('admin.')->group(function () {
+    Route::prefix('/events')->name('events.')->group(function () {
+        Route::get('/', [EventController::class, 'index'])->name('index');
+        Route::get('/create', [EventController::class, 'create'])->name('create');
+        Route::post('/store', [EventController::class, 'store'])->name('store');
+        Route::get('/{event}/edit', [EventController::class, 'edit'])->name('edit');
+        Route::post('/update/{event}', [EventController::class, 'update'])->name('update');
+        Route::get('/destroy/{event}', [EventController::class, 'destroy'])->name('destroy');
+    });
+});
 
 Route::get('/queries/{id?}', function ($id = null) {
     if (is_null($id)) {

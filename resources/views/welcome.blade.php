@@ -22,7 +22,7 @@
                         <p class="card-text">{{ $event->description }}</p>
                     </div>
                     <div class="card-footer">
-                        <a href="/eventos/{{ $event->slug }}" class="btn btn-link">Ir para Evento</a>
+                        <a href="{{ route('event.single', $event->slug) }}" class="btn btn-link">Visualizar Evento</a>
                     </div>
                 </div>
             </div>

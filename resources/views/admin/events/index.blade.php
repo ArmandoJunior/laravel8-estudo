@@ -4,7 +4,7 @@
     <div class="row">
         <div class="col-12 d-flex justify-content-between align-items-center my-5">
             <h2>Meus Eventos</h2>
-            <a href="/admin/events/create" class="btn btn-success">Criar Evento</a>
+            <a href="{{ route('admin.events.create') }}" class="btn btn-success">Criar Evento</a>
         </div>
         <div class="col-12">
             <table class="table  table-striped">
@@ -23,8 +23,8 @@
                         <td>{{ $event->title }}</td>
                         <td>{{ $event->created_at->format('d/m/Y H:i:s') }}</td>
                         <td>
-                            <a href="/admin/events/{{ $event->id }}/edit" class="btn btn-outline-dark">Editar</a>
-                            <a href="/admin/events/destroy/{{ $event->id }}" class="btn btn-danger">Remover</a>
+                            <a href="{{ route('admin.events.edit', $event->id) }}" class="btn btn-outline-dark">Editar</a>
+                            <a href="{{ route('admin.events.destroy', $event->id) }}" class="btn btn-danger">Remover</a>
                         </td>
                     </tr>
                 @empty

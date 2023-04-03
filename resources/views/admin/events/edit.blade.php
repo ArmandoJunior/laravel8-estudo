@@ -4,12 +4,12 @@
     <div class="row">
         <div class="col-12 d-flex justify-content-between align-items-center my-5">
             <h2>Criar Evento</h2>
-            <a href="/admin/events/index" class="btn btn-link">Voltar</a>
+            <a href="{{ route('admin.events.index') }}" class="btn btn-link">Voltar</a>
         </div>
     </div>
     <div class="row">
         <div class="col-12">
-            <form action="/admin/events/update/{{ $event->id }}" method="post">
+            <form action="{{ route('admin.events.update', $event->id) }}" method="post">
                 @csrf
                 <div class="form-group">
                     <label for="title">Titulo</label>

@@ -37,7 +37,7 @@ class EventController extends Controller
         $allFormContent['slug'] = Str::slug($allFormContent['title']);
         Event::query()->create($allFormContent);
 
-        return redirect()->to('/admin/events/index');
+        return redirect()->to(route('admin.events.index'));
     }
 
     public function edit($event)
@@ -60,6 +60,6 @@ class EventController extends Controller
         $event = Event::query()->findOrFail($event);
         $event->delete();
 
-        return redirect()->to('/admin/events/index');
+        return redirect()->to(route('admin.events.index'));
     }
 }
