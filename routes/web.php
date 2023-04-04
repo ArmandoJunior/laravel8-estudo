@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\EventController;
+use App\Http\Controllers\Admin\EventPhotoController;
 use App\Http\Controllers\HelloWorldController;
 use App\Http\Controllers\HomeController;
 use App\Models\Event;
@@ -24,14 +25,16 @@ Route::get('/events/{slug}', [HomeController::class, 'show'])->name('event.singl
 Route::get('view-test', fn() => view('test.index'));
 
 Route::prefix('/admin')->name('admin.')->group(function () {
-    Route::prefix('/events')->name('events.')->group(function () {
-        Route::get('/', [EventController::class, 'index'])->name('index');
-        Route::get('/create', [EventController::class, 'create'])->name('create');
-        Route::post('/store', [EventController::class, 'store'])->name('store');
-        Route::get('/{event}/edit', [EventController::class, 'edit'])->name('edit');
-        Route::post('/update/{event}', [EventController::class, 'update'])->name('update');
-        Route::get('/destroy/{event}', [EventController::class, 'destroy'])->name('destroy');
-    });
+//    Route::prefix('/events')->name('events.')->group(function () {
+//        Route::get('/', [EventController::class, 'index'])->name('index');
+//        Route::get('/create', [EventController::class, 'create'])->name('create');
+//        Route::post('/store', [EventController::class, 'store'])->name('store');
+//        Route::get('/{event}/edit', [EventController::class, 'edit'])->name('edit');
+//        Route::post('/update/{event}', [EventController::class, 'update'])->name('update');
+//        Route::get('/destroy/{event}', [EventController::class, 'destroy'])->name('destroy');
+//    });
+    Route::resource('events', EventController::class)->except('show');
+    Route::resource('events.photos', EventPhotoController::class)->only('index', 'show');
 });
 
 Route::get('/queries/{id?}', function ($id = null) {

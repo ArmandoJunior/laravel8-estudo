@@ -11,6 +11,7 @@
         <div class="col-12">
             <form action="{{ route('admin.events.update', $event->id) }}" method="post">
                 @csrf
+                @method('put')
                 <div class="form-group">
                     <label for="title">Titulo</label>
                     <input

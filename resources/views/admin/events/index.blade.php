@@ -13,7 +13,7 @@
                     <th>#</th>
                     <th>Evento</th>
                     <th>Criado Em</th>
-                    <th>Alões</th>
+                    <th class="col-2">Ações</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -22,9 +22,13 @@
                         <td>{{ $event->id }}</td>
                         <td>{{ $event->title }}</td>
                         <td>{{ $event->created_at->format('d/m/Y H:i:s') }}</td>
-                        <td>
+                        <td class="d-flex">
                             <a href="{{ route('admin.events.edit', $event->id) }}" class="btn btn-outline-dark">Editar</a>
-                            <a href="{{ route('admin.events.destroy', $event->id) }}" class="btn btn-danger">Remover</a>
+                            <form action="{{ route('admin.events.destroy', $event->id) }}" method="post" class="pl-2">
+                                @csrf
+                                @method('delete')
+                                <button class="btn btn-danger">Remover</button>
+                            </form>
                         </td>
                     </tr>
                 @empty
