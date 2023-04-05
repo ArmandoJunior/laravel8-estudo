@@ -19,12 +19,12 @@ use Illuminate\Support\Str;
 |
 */
 
+Auth::routes();
+
 Route::get('/', [HomeController::class, 'index']);
 Route::get('/events/{slug}', [HomeController::class, 'show'])->name('event.single');
 
-Route::get('view-test', fn() => view('test.index'));
-
-Route::prefix('/admin')->name('admin.')->group(function () {
+Route::middleware('auth')->prefix('/admin')->name('admin.')->group(function () {
 //    Route::prefix('/events')->name('events.')->group(function () {
 //        Route::get('/', [EventController::class, 'index'])->name('index');
 //        Route::get('/create', [EventController::class, 'create'])->name('create');
@@ -37,21 +37,24 @@ Route::prefix('/admin')->name('admin.')->group(function () {
     Route::resource('events.photos', EventPhotoController::class)->only('index', 'show');
 });
 
-Route::get('/queries/{id?}', function ($id = null) {
-    if (is_null($id)) {
-        $event = new Event();
-        $event->title = 'Evento via Eloquente e Active Record';
-        $event->description = 'DEscrição do evento...';
-        $event->body = 'Conteúdo do evento...';
-        $event->start_event = date('Y-m-d H:i:s');
-        $event->slug = Str::slug($event->title);
-        $event->save();
+//Route::get('/queries/{id?}', function ($id = null) {
+//    if (is_null($id)) {
+//        $event = new Event();
+//        $event->title = 'Evento via Eloquente e Active Record';
+//        $event->description = 'DEscrição do evento...';
+//        $event->body = 'Conteúdo do evento...';
+//        $event->start_event = date('Y-m-d H:i:s');
+//        $event->slug = Str::slug($event->title);
+//        $event->save();
+//
+//        return $event->id;
+//    }
+//    return Event::query()->find($id);
+//});
+//Route::get('/teste', [HelloWorldController::class, 'teste']);
+//Route::get('/parametros/{name?}', [HelloWorldController::class, 'parametros']);
+//Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-        return $event->id;
-    }
-    return Event::query()->find($id);
-});
+//Route::get('view-test', fn() => view('test.index'));
 
-Route::get('/teste', [HelloWorldController::class, 'teste']);
 
-Route::get('/parametros/{name?}', [HelloWorldController::class, 'parametros']);

@@ -22,9 +22,9 @@
                         <td>{{ $event->id }}</td>
                         <td>{{ $event->title }}</td>
                         <td>{{ $event->created_at->format('d/m/Y H:i:s') }}</td>
-                        <td class="d-flex">
-                            <a href="{{ route('admin.events.edit', $event->id) }}" class="btn btn-outline-dark">Editar</a>
-                            <form action="{{ route('admin.events.destroy', $event->id) }}" method="post" class="pl-2">
+                        <td class="d-flex align-content-start">
+                            <a href="{{ route('admin.events.edit', $event->id) }}" class="btn btn-outline-dark" style="margin-right: 10px">Editar</a>
+                            <form action="{{ route('admin.events.destroy', $event->id) }}" method="post">
                                 @csrf
                                 @method('delete')
                                 <button class="btn btn-danger">Remover</button>
@@ -33,7 +33,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="3">Nenhum evento encontrado</td>
+                        <td colspan="4">Nenhum evento encontrado</td>
                     </tr>
                 @endforelse
                 </tbody>
