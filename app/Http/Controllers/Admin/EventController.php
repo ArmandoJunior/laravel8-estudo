@@ -8,6 +8,11 @@ use Illuminate\Support\Str;
 
 class EventController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('user.can.edit.event')->only('edit', 'update');
+    }
+
     public function index()
     {
         $events = auth()->user()->events()->paginate(10);
@@ -23,7 +28,6 @@ class EventController extends Controller
     public function store(EventRequest $request)
     {
         $allFormContent = $request->validated();
-        $allFormContent['slug'] = Str::slug($allFormContent['title']);
         auth()->user()->events()->create($allFormContent);
 
         return redirect()->to(route('admin.events.index'));
