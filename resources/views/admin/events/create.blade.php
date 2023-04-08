@@ -29,6 +29,7 @@
                     <label for="title">Titulo</label>
                     <input
                         name="title"
+                        value="{{ old('title') }}"
                         id="title"
                         type="text"
                         class="form-control @error('title')) is-invalid @enderror">
@@ -42,6 +43,7 @@
                     <label for="description">Descrição Resumida</label>
                     <input
                         name="description"
+                        value="{{ old('description') }}"
                         id="description"
                         type="text"
                         class="form-control @error('description')) is-invalid @enderror">
@@ -58,7 +60,9 @@
                         id="body"
                         cols="30"
                         rows="10"
-                        class="form-control @error('body')) is-invalid @enderror"></textarea>
+                        class="form-control @error('body')) is-invalid @enderror">
+                        {{ old('body') }}
+                    </textarea>
                     @error('body')
                         <div class="invalid-feedback">
                             {{ $message }}
@@ -69,6 +73,7 @@
                     <label for="start_event">Data de Início</label>
                     <input
                         name="start_event"
+                        value="{{ old('start_event') }}"
                         id="start_event"
                         type="text"
                         class="form-control @error('start_event')) is-invalid @enderror">
@@ -83,4 +88,12 @@
             </form>
         </div>
     </div>
+@endsection
+
+@section('scripts')
+    <script>
+        let element = document.querySelector('input[name=start_event]');
+        let inputMask = new Inputmask('99/99/9999 99:99:99');
+        inputMask.mask(element);
+    </script>
 @endsection

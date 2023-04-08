@@ -21,7 +21,7 @@ use Illuminate\Support\Str;
 
 Auth::routes();
 
-Route::get('/', [HomeController::class, 'index']);
+Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/events/{slug}', [HomeController::class, 'show'])->name('event.single');
 
 Route::middleware('auth')->prefix('/admin')->name('admin.')->group(function () {

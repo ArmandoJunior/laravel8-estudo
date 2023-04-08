@@ -14,7 +14,7 @@ class CategoryFactory extends Factory
      */
     public function definition()
     {
-        $categoryName = $this->faker->words(2, true);
+        $categoryName = $this->faker->city;
         return [
             'name' => $categoryName,
             'description' => $this->faker->sentence,

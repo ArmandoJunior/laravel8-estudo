@@ -15,10 +15,10 @@ class UserTableSeeder extends Seeder
      */
     public function run()
     {
-        User::factory(50)
+        User::factory(7)
             ->has(
                 Event::factory(30)
-                    ->hasCategories(4)
+                    ->hasCategories(2)
                     ->hasPhotos(7)
             )
             ->hasProfile()

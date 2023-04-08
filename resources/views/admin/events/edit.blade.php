@@ -59,7 +59,7 @@
                 <div class="form-group ">
                     <label for="start_event">Data de Início</label>
                     <input
-                        value="{{ $event->start_event->format('m/d/Y H:i:s') }}"
+                        value="{{ $event->start_event->format('d/m/Y H:i:s') }}"
                         id="start_event"
                         name="start_event"
                         type="text"
@@ -75,4 +75,12 @@
             </form>
         </div>
     </div>
+@endsection
+
+@section('scripts')
+    <script>
+        let element = document.querySelector('input[name=start_event]');
+        let inputMask = new Inputmask('99/99/9999 99:99:99');
+        inputMask.mask(element);
+    </script>
 @endsection
