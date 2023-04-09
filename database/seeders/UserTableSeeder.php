@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Event;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class UserTableSeeder extends Seeder
@@ -13,6 +15,13 @@ class UserTableSeeder extends Seeder
      */
     public function run()
     {
-        \App\Models\User::factory(100)->create();
+        User::factory(7)
+            ->has(
+                Event::factory(30)
+                    ->hasCategories(2)
+                    ->hasPhotos(7)
+            )
+            ->hasProfile()
+            ->create();
     }
 }
