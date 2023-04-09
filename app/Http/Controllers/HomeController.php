@@ -12,7 +12,6 @@ class HomeController extends Controller
     {
         $search = request()->query('search');
         $categoryId = request()->query('category') | request()->query('categoryId');
-        dump(request()->all());
         $category = $categoryId ? Category::query()->where('id', $categoryId)->first():false;
         $events = $category?$category->events():Event::query();
         $events = $events->when($search, function ($qBuilder) use($search) {
@@ -25,10 +24,8 @@ class HomeController extends Controller
         return view('home', compact('events', 'search', 'categoryId'));
     }
 
-    public function show($slug)
+    public function show(Event $event)
     {
-        $event = Event::query()->whereSlug($slug)->first();
-
         return view('event', compact('event'));
     }
 }

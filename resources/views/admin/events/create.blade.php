@@ -23,7 +23,7 @@
     --}}
     <div class="row">
         <div class="col-12">
-            <form action="{{ route('admin.events.store') }}" method="post">
+            <form action="{{ route('admin.events.store') }}" method="post" enctype="multipart/form-data">
                 @csrf
                 <div class="form-group">
                     <label for="title">Titulo</label>
@@ -81,6 +81,18 @@
                         <div class="invalid-feedback">
                             {{ $message }}
                         </div>
+                    @enderror
+                </div>
+
+                <div class="form-group">
+                    <label>Carregar o Banner para o Evento</label>
+                    <input type="file"
+                           name="banner",
+                           class="form-control @error('banner')) is-invalid @enderror">
+                    @error('banner')
+                    <div class="invalid-feedback">
+                        {{ $message }}
+                    </div>
                     @enderror
                 </div>
 

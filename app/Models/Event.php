@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
@@ -10,7 +11,7 @@ class Event extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['title', 'description', 'body', 'slug', 'start_event'];
+    protected $fillable = ['title', 'description', 'body', 'slug', 'start_event', 'banner'];
 
     protected $dates = ['start_event'];
 
@@ -33,8 +34,9 @@ class Event extends Model
 
     public function setStartEventAttribute($value)
     {
-//        $datetime = Carbon::createFromFormat('d/m/Y H:i:s', $value)->toDateTimeString();
-        $this->attributes['start_event'] = $value;
+        $datetime = Carbon::createFromFormat('d/m/Y H:i:s', $value)->toDateTimeString();
+//        dd($datetime);
+        $this->attributes['start_event'] = $datetime;
     }
 
     public function photos()

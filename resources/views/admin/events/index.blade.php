@@ -24,6 +24,7 @@
                         <td>{{ $event->created_at->format('d/m/Y H:i:s') }}</td>
                         <td class="d-flex align-content-start">
                             <a href="{{ route('admin.events.edit', $event->id) }}" class="btn btn-outline-dark" style="margin-right: 10px">Editar</a>
+                            <a href="{{ route('admin.events.photos.index', $event->id) }}" class="btn btn-secondary" style="margin-right: 10px">Fotos</a>
                             <form action="{{ route('admin.events.destroy', $event->id) }}" method="post">
                                 @csrf
                                 @method('delete')

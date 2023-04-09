@@ -26,8 +26,9 @@ class EventRequest extends FormRequest
         return [
             'title' => 'required|min:9|max:255',
             'description' => 'required|min:30|max:255',
-            'body' => 'required|min:50',
+            'body' => 'required|min:200',
             'start_event' => 'required',
+            'banner' => 'image',
         ];
     }
 
@@ -36,7 +37,8 @@ class EventRequest extends FormRequest
         return [
             'required' => 'Este campo não pode ser vazio',
             'min' => 'Tamanho mínimo necessário de :min caracteres',
-            'max' => 'Tamanho máximo permitido de :max caracteres'
+            'max' => 'Tamanho máximo permitido de :max caracteres',
+            'image' => 'Arquivo de imagem inválido',
         ];
     }
 }

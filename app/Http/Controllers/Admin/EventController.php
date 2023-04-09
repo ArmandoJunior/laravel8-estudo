@@ -4,10 +4,12 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\EventRequest;
-use Illuminate\Support\Str;
+use App\Traits\UploadTrait;
+use Illuminate\Support\Facades\Storage;
 
 class EventController extends Controller
 {
+    use UploadTrait;
     public function __construct()
     {
         $this->middleware('user.can.edit.event')->only('edit', 'update');
@@ -27,8 +29,13 @@ class EventController extends Controller
 
     public function store(EventRequest $request)
     {
-        $allFormContent = $request->validated();
-        auth()->user()->events()->create($allFormContent);
+        $event = $request->validated();
+//        $event['banner'] = ($request->file('banner')??null)?->store('banner', 'public');
+        $event = (auth()->user()->events()->create($event));
+        if($banner = $request->file('banner')) {
+            $event['banner'] = $this->upload($banner, "events/{$event->id}/banner/");
+            $event->update();
+        }
 
         return redirect()->to(route('admin.events.index'));
     }
@@ -43,7 +50,12 @@ class EventController extends Controller
     public function update($event, EventRequest $request)
     {
         $event = Auth()->user()->events()->findOrFail($event);
-        $event->update($request->all());
+        $eventData = $request->all();
+        if($banner = $request->file('banner')) {
+            Storage::disk('public')->delete($event->banner);
+            $eventData['banner'] = $this->upload($banner, "events/{$event->id}/banner/");
+        }
+        $event->update($eventData);
 
         return redirect()->back();
     }

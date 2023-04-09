@@ -22,7 +22,7 @@ use Illuminate\Support\Str;
 Auth::routes();
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::get('/events/{slug}', [HomeController::class, 'show'])->name('event.single');
+Route::get('/events/{event:slug}', [HomeController::class, 'show'])->name('event.single');
 
 Route::middleware('auth')->prefix('/admin')->name('admin.')->group(function () {
 //    Route::prefix('/events')->name('events.')->group(function () {
@@ -34,7 +34,8 @@ Route::middleware('auth')->prefix('/admin')->name('admin.')->group(function () {
 //        Route::get('/destroy/{event}', [EventController::class, 'destroy'])->name('destroy');
 //    });
     Route::resource('events', EventController::class)->except('show');
-    Route::resource('events.photos', EventPhotoController::class)->only('index', 'show');
+    Route::resource('events.photos', EventPhotoController::class)
+        ->only('index', 'store', 'destroy');
 });
 
 //Route::get('/queries/{id?}', function ($id = null) {
