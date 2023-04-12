@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Event;
-use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
 {
@@ -17,7 +16,7 @@ class HomeController extends Controller
         $events = $events->when($search, function ($qBuilder) use($search) {
                 return $qBuilder->where('title', 'LIKE', "%{$search}%");
             })
-            ->whereDate('start_event', '>=', now())
+//            ->whereDate('start_event', '>=', now())
             ->orderBy('start_event', 'desc')
             ->paginate(15);
 

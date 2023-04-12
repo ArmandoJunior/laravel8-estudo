@@ -39,7 +39,7 @@
                         </div>
                     @enderror
                 </div>
-                <div class="form-group">
+                <div class="form-group mt-2">
                     <label for="description">Descrição Resumida</label>
                     <input
                         name="description"
@@ -53,7 +53,7 @@
                         </div>
                     @enderror
                 </div>
-                <div class="form-group">
+                <div class="form-group mt-2">
                     <label for="body">Descrição Detalhada</label>
                     <textarea
                         name="body"
@@ -69,7 +69,7 @@
                         </div>
                     @enderror
                 </div>
-                <div class="form-group ">
+                <div class="form-group mt-2">
                     <label for="start_event">Data de Início</label>
                     <input
                         name="start_event"
@@ -84,10 +84,10 @@
                     @enderror
                 </div>
 
-                <div class="form-group">
+                <div class="form-group mt-2">
                     <label>Carregar o Banner para o Evento</label>
                     <input type="file"
-                           name="banner",
+                           name="banner"
                            class="form-control @error('banner')) is-invalid @enderror">
                     @error('banner')
                     <div class="invalid-feedback">
@@ -96,7 +96,18 @@
                     @enderror
                 </div>
 
-                <button type="submit" class="btn btn-lg btn-outline-success">Salvar</button>
+                <div class="form-group mt-2">
+                    <label for="">Quais Categorias o Evento Pertence</label>
+                    <select name="categories[]" class="form-control" multiple>
+                        @foreach($categories as $category)
+                            <option value="{{ $category->id }}">
+                                {{ $category->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <button type="submit" class="btn btn-lg btn-outline-success mt-3">Salvar</button>
             </form>
         </div>
     </div>

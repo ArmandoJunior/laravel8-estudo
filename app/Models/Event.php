@@ -2,14 +2,15 @@
 
 namespace App\Models;
 
+use Spatie\Sluggable\HasSlug;
+use Spatie\Sluggable\SlugOptions;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Str;
 
 class Event extends Model
 {
-    use HasFactory;
+    use HasFactory, HasSlug;
 
     protected $fillable = ['title', 'description', 'body', 'slug', 'start_event', 'banner'];
 
@@ -20,22 +21,19 @@ class Event extends Model
         return ucwords($this->owner->name)??"Não encontrado";
     }
 
-    public function getDescriptionAttribute()
-    {
-//        dd($this->attributes['description']);
-        return "Descrição: " . $this->attributes['description'];
-    }
-
-    public function setTitleAttribute($value)
-    {
-        $this->attributes['title'] = $value;
-        $this->attributes['slug'] = Str::slug($value);
-    }
+//    public function setTitleAttribute($value)
+//    {
+//        $this->attributes['title'] = $value;
+//        $this->attributes['slug'] = Str::slug($value);
+//    }
 
     public function setStartEventAttribute($value)
     {
-        $datetime = Carbon::createFromFormat('d/m/Y H:i:s', $value)->toDateTimeString();
-//        dd($datetime);
+        try {
+            $datetime = Carbon::createFromFormat('d/m/Y H:i:s', $value)->toDateTimeString();
+        } catch (\Exception $exception) {
+            $datetime = $value;
+        }
         $this->attributes['start_event'] = $datetime;
     }
 
@@ -52,5 +50,17 @@ class Event extends Model
     public function owner()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function enrollments()
+    {
+        return $this->belongsToMany(User::class)->withPivot('reference', 'status');
+    }
+
+    public function getSlugOptions(): SlugOptions
+    {
+        return SlugOptions::create()
+            ->generateSlugsFrom('title')
+            ->saveSlugsTo('slug');
     }
 }

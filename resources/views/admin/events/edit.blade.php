@@ -26,7 +26,7 @@
                     </div>
                     @enderror
                 </div>
-                <div class="form-group">
+                <div class="form-group mt-2">
                     <label for="description">Descrição Resumida</label>
                     <input
                         value="{{ $event->description }}"
@@ -40,7 +40,7 @@
                     </div>
                     @enderror
                 </div>
-                <div class="form-group">
+                <div class="form-group mt-2">
                     <label for="body">Descrição Detalhada</label>
                     <textarea
                         name="body"
@@ -56,7 +56,7 @@
                         </div>
                     @enderror
                 </div>
-                <div class="form-group ">
+                <div class="form-group mt-2">
                     <label for="start_event">Data de Início</label>
                     <input
                         value="{{ $event->start_event->format('d/m/Y H:i:s') }}"
@@ -85,7 +85,7 @@
                         <div class="col-8">
                             <label>Carregar o Banner para o Evento</label>
                             <input type="file"
-                                   name="banner",
+                                   name="banner"
                                    class="form-control @error('banner')) is-invalid @enderror">
                             @error('banner')
                             <div class="invalid-feedback">
@@ -96,10 +96,23 @@
                         <div class="col-12">
                             <hr>
                         </div>
+                        <div class="form-group mt-2">
+                            <div class="col-4">
+                                <label for="">Quais Categorias o Evento Pertence</label>
+                                <select name="categories[]" class="form-control" multiple>
+                                    @foreach($categories as $category)
+                                        <option value="{{ $category->id }}"
+                                                @if($event->categories->contains($category)) selected @endif>
+                                            {{ $category->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <button type="submit" class="btn btn-lg btn-outline-success">Atualizar</button>
+                <button type="submit" class="btn btn-lg btn-outline-success mt-3">Atualizar</button>
             </form>
         </div>
     </div>

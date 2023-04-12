@@ -1,9 +1,27 @@
 @extends('layouts.site')
 @section('title') Evento: {{ $event->title }} -@endsection
 @section('content')
-    <div class="row">
-        <h2>Evento: {{ $event->title }}</h2>
-        <p>O evento ocorrerá em {{$event->start_event->format('d/m/Y H:i:s')}}</p>
+    @if($event->banner)
+        <div class="row mb-3">
+            <div class="col-12">
+                <img src="{{ asset('storage/' . $event->banner) }}"
+                     alt="Banner do Evento {{ $event->title }}"
+                     class="img-fluid">
+            </div>
+        </div>
+    @endif
+    <div class="row mb-3">
+        <div class="col-12 d-flex justify-content-between">
+            <h2>Evento: {{ $event->title }}</h2>
+            <p>O evento ocorrerá em {{$event->start_event->format('d/m/Y H:i:s')}}</p>
+        </div>
+        <div>
+            @if($event->enrollments->contains(auth()->user()))
+                <a href="{{ route('enrollment.start', $event->slug) }}" class="btn btn-success disabled" >Inscrito</a>
+            @else
+                <a href="{{ route('enrollment.start', $event->slug) }}" class="btn btn-success">Inscrever-se</a>
+            @endif
+        </div>
     </div>
 
     <div class="col-12 pt-4">

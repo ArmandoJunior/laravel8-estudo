@@ -14,13 +14,14 @@ class EventFactory extends Factory
      */
     public function definition()
     {
-        $title = $this->faker->words(5, true);
+        $title = $this->faker->jobTitle . $this->faker->country;
         return [
             'title' => $title,
-            'description' => $this->faker->words(19, true),
-            'body' => $this->faker->paragraph(50),
+            'description' => $this->faker->words(15, true), // short information
+            'body' => $this->faker->paragraph(50), // long information
             'start_event' => now(),
-            'slug' => Str::slug($title)
+            'slug' => Str::slug($title),
+            'owner_id' => rand(1,20),
         ];
     }
 }

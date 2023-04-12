@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\EventRequest;
+use App\Models\Category;
+use App\Services\MessageService;
 use App\Traits\UploadTrait;
 use Illuminate\Support\Facades\Storage;
 
@@ -24,7 +26,9 @@ class EventController extends Controller
 
     public function create()
     {
-        return view('admin.events.create');
+        $categories = Category::all(['id', 'name']);
+
+        return view('admin.events.create', compact('categories'));
     }
 
     public function store(EventRequest $request)
@@ -36,15 +40,20 @@ class EventController extends Controller
             $event['banner'] = $this->upload($banner, "events/{$event->id}/banner/");
             $event->update();
         }
+        if ($categories = $request->get('categories')) {
+            $event->categories()->sync($categories);
+        }
 
+        MessageService::addFlash('success', 'Evento criado com sucesso!');
         return redirect()->to(route('admin.events.index'));
     }
 
     public function edit($event)
     {
         $event = Auth()->user()->events()->findOrFail($event);
+        $categories = Category::all(['id', 'name']);
 
-        return view('admin.events.edit', compact('event'));
+        return view('admin.events.edit', compact('event', 'categories'));
     }
 
     public function update($event, EventRequest $request)
@@ -56,7 +65,10 @@ class EventController extends Controller
             $eventData['banner'] = $this->upload($banner, "events/{$event->id}/banner/");
         }
         $event->update($eventData);
-
+        if ($categories = $request->get('categories')) {
+            $event->categories()->sync($categories);
+        }
+        MessageService::addFlash('success', 'Evento atualizado com sucesso!');
         return redirect()->back();
     }
 
@@ -65,6 +77,7 @@ class EventController extends Controller
         $event = Auth()->user()->events()->findOrFail($event);
         $event->delete();
 
+        MessageService::addFlash('success', 'Evento removido com sucesso!');
         return redirect()->to(route('admin.events.index'));
     }
 }

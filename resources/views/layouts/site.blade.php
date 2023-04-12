@@ -17,9 +17,6 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="{{ route('home') }}">Home</a>
-                </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         Categorias
@@ -36,11 +33,8 @@
                         <li><a class="dropdown-item" href="#">Something else here</a></li>
                     </ul>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('admin.events.index') }}">Admin</a>
-                </li>
             </ul>
-            <form class="d-flex">
+            <form class="d-flex me-3">
                 <input class="form-control me-2"
                        type="search"
                        placeholder="Buscar evento"
@@ -49,10 +43,22 @@
                        name="search">
                 <button class="btn btn-dark" type="submit" style="border-color: #3d3d3d">Buscar</button>
             </form>
+            <div class="d-flex me-2">
+                @auth
+                    <a class="nav-link link-light" href="{{ route('admin.events.index') }}">Meu Painel</a>
+                @else
+                    <a class="nav-link link-light" href="{{ route('login') }}">Acessar Admin</a>
+                @endauth
+            </div>
         </div>
     </div>
 </nav>
     <div class="container">
+        <div class="row">
+            <div class="col-12">
+                @include('messages.bootstrap.messages')
+            </div>
+        </div>
         @yield('content')
     </div>
 <script src="{{ asset('js/app.js') }}"></script>

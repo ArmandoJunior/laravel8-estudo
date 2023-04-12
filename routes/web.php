@@ -2,60 +2,42 @@
 
 use App\Http\Controllers\Admin\EventController;
 use App\Http\Controllers\Admin\EventPhotoController;
-use App\Http\Controllers\HelloWorldController;
+use App\Http\Controllers\Admin\ProfileController;
+use App\Http\Controllers\EnrollmentController;
 use App\Http\Controllers\HomeController;
-use App\Models\Event;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Str;
-
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
-
-Auth::routes();
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use Illuminate\Http\Request;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/events/{event:slug}', [HomeController::class, 'show'])->name('event.single');
 
-Route::middleware('auth')->prefix('/admin')->name('admin.')->group(function () {
-//    Route::prefix('/events')->name('events.')->group(function () {
-//        Route::get('/', [EventController::class, 'index'])->name('index');
-//        Route::get('/create', [EventController::class, 'create'])->name('create');
-//        Route::post('/store', [EventController::class, 'store'])->name('store');
-//        Route::get('/{event}/edit', [EventController::class, 'edit'])->name('edit');
-//        Route::post('/update/{event}', [EventController::class, 'update'])->name('update');
-//        Route::get('/destroy/{event}', [EventController::class, 'destroy'])->name('destroy');
-//    });
+Route::prefix('/enrollment')->name('enrollment.')->group(function () {
+    Route::get('/start/{event:slug}', [EnrollmentController::class, 'start'])->name('start');
+    Route::get('/confirm', [EnrollmentController::class, 'confirm'])->name('confirm')->middleware('auth');
+    Route::get('/proccess', [EnrollmentController::class, 'proccess'])->name('proccess')->middleware('auth');
+});
+
+Route::middleware(['auth', 'verified'])->prefix('/admin')->name('admin.')->group(function () {
     Route::resource('events', EventController::class)->except('show');
     Route::resource('events.photos', EventPhotoController::class)
         ->only('index', 'store', 'destroy');
+    Route::get('profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::put('profile', [ProfileController::class, 'update'])->name('profile.update');
 });
 
-//Route::get('/queries/{id?}', function ($id = null) {
-//    if (is_null($id)) {
-//        $event = new Event();
-//        $event->title = 'Evento via Eloquente e Active Record';
-//        $event->description = 'DEscrição do evento...';
-//        $event->body = 'Conteúdo do evento...';
-//        $event->start_event = date('Y-m-d H:i:s');
-//        $event->slug = Str::slug($event->title);
-//        $event->save();
-//
-//        return $event->id;
-//    }
-//    return Event::query()->find($id);
-//});
-//Route::get('/teste', [HelloWorldController::class, 'teste']);
-//Route::get('/parametros/{name?}', [HelloWorldController::class, 'parametros']);
-//Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::prefix('/email')->name('verification.')->group(function () {
+    Route::get('/verify', function () {
+        return view('auth.verify');
+    })->middleware('auth')->name('notice');
+    Route::get('/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+        $request->fulfill();
+        return redirect('/admin/events');
+    })->middleware(['auth', 'signed'])->name('verify');
+    Route::post('/verification-notification', function (Request $request) {
+        $request->user()->sendEmailVerificationNotification();
+        return back()->with('message', 'Verification link sent!');
+    })->middleware(['auth', 'throttle:6,1'])->name('send');
+});
 
-//Route::get('view-test', fn() => view('test.index'));
-
-
+Auth::routes();

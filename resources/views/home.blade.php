@@ -13,8 +13,8 @@
     <div class="row">
         @forelse($events as $event)
             <div class="col-4 pt-3">
-                <div class="card" style="height: 450px">
-                    <img src="https://via.placeholder.com/640x280.png/003388?text={{ Color::colorName() }}"
+                <div class="card" style="min-height: 580px">
+                    <img src="{{ $event->banner?asset('storage/' . $event->banner):"https://via.placeholder.com/640x380.png/003388?text=BANNER" }}"
                          class="card-img-top" alt="{{ $event->title }}">
                     <div class="card-body">
                         <h5 class="card-title">{{ $event->title }}</h5>

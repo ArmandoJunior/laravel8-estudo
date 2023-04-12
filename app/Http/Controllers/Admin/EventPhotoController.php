@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\EventPhotoRequest;
 use App\Models\Event;
+use App\Services\MessageService;
 use App\Traits\UploadTrait;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -61,6 +62,7 @@ class EventPhotoController extends Controller
 
         $event->photos()->createMany($uploadedPhotos);
 
+        MessageService::addFlash('success', 'Foto(s) adicionada(s) com sucesso!');
         return redirect()->back();
     }
 
@@ -112,6 +114,7 @@ class EventPhotoController extends Controller
         Storage::disk('public')->delete($photo->photo);
         $photo->delete();
 
+        MessageService::addFlash('success', 'Foto removida com sucesso!');
         return view('admin.events.photos', compact('event'));
     }
 }

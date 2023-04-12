@@ -15,4 +15,9 @@ class Profile extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function getSocialNetworksAttribute()
+    {
+        return json_decode($this->attributes['social_networks'], true);
+    }
 }

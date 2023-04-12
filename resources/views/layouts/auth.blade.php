@@ -9,7 +9,7 @@
     <title> @yield('title') Eventos App</title>
 </head>
 <body>
-    <div class="container">
+    <div class="container my-5">
         @yield('content')
     </div>
 <script src="{{ asset('js/app.js') }}"></script>
